@@ -10,15 +10,15 @@ import imutils
 import time
 import cv2
 
-        
+
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video", type=str,
-    help="path to input video file")
+                help="path to input video file")
 ap.add_argument("-t", "--tracker", type=str, default="kcf",
-    help="OpenCV object tracker type")
+                help="OpenCV object tracker type")
 args = vars(ap.parse_args())
-        
+
 # extract the OpenCV version info
 (major, minor) = cv2.__version__.split(".")[:2]
 
@@ -26,7 +26,7 @@ args = vars(ap.parse_args())
 # function to create our object tracker
 if int(major) == 3 and int(minor) < 3:
     tracker = cv2.Tracker_create(args["tracker"].upper())
-    
+
 # otherwise, for OpenCV 3.3 OR NEWER, we need to explicity call the
 # approrpiate object tracker constructor:
 else:
@@ -69,7 +69,6 @@ while True:
     # VideoStream or VideoCapture object
     frame = vs.read()
     frame = frame[1] if args.get("video", False) else frame
-        
 
     # check to see if we have reached the end of the stream
     if frame is None:
@@ -90,7 +89,7 @@ while True:
             (x, y, w, h) = [int(v) for v in box]
             print((x, y, w, h))
             cv2.rectangle(frame, (x, y), (x + w, y + h),
-                (0, 255, 0), 2)
+                          (0, 255, 0), 2)
 
         # update the FPS counter
         fps.update()
@@ -108,17 +107,17 @@ while True:
         for (i, (k, v)) in enumerate(info):
             text = "{}: {}".format(k, v)
             cv2.putText(frame, text, (10, H - ((i * 20) + 20)),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
 
     # show the output frame
     cv2.imshow("Frame", frame)
     key = cv2.waitKey(1) & 0xFF
-    
+
     if fps == None:
         # select the bounding box of the object we want to track (make
         # sure you press ENTER or SPACE after selecting the ROI)
         initBB = cv2.selectROI("Frame", frame, fromCenter=False,
-            showCrosshair=True)
+                               showCrosshair=True)
 
         # start OpenCV object tracker using the supplied bounding box
         # coordinates, then start the FPS throughput estimator as well
@@ -131,7 +130,7 @@ while True:
         # select the bounding box of the object we want to track (make
         # sure you press ENTER or SPACE after selecting the ROI)
         initBB = cv2.selectROI("Frame", frame, fromCenter=False,
-            showCrosshair=True)
+                               showCrosshair=True)
 
         # start OpenCV object tracker using the supplied bounding box
         # coordinates, then start the FPS throughput estimator as well
